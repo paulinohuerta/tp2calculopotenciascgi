@@ -1,8 +1,8 @@
 #!/usr/bin/perl
 use CGI;
 $cgi = new CGI;
-print $cgi->header;
-print $cgi->start_html('titulo');
+print $cgi->header(-charset => 'utf-8');
+print $cgi->start_html('Cálculo de potencia');
 
 if(!$cgi->param){
 	print $cgi->start_form;
@@ -18,10 +18,16 @@ if(!$cgi->param){
 }else{
 	$b=$cgi->param('base');
 	$exp= $cgi->param('exponente');
-	$resultado=1;
-		for(my $i=0;$i<$exp;$i++){
-			$resultado=$resultado*$b;
-		}
-	print $cgi->h3('El resultado de elevar '.$b.' a '.$exp.' es '.$resultado);
+        if($b+0 ne $b or $exp+0 ne $exp) {
+          $mens = "Base y exponente deben ser numéricos";
+        }
+        else {
+	  $resultado=1;
+	  for(my $i=0;$i<$exp;$i++){
+	    $resultado=$resultado*$b;
+	  }
+          $mens = "El resultado de elevar $b a $exp es $resultado";
+        }
+	print $cgi->h3($mens);
 }
 print $cgi->end_html;
